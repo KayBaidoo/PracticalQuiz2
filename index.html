@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tea Garden Scene</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; }
+  </style>
+</head>
+
+<body>
+<a-scene fog="type: linear; color: #b8d4e8; near: 25; far: 65">
+
+  <!-- ============================================================
+       ASSETS — preload all textures so they load before the scene
+       ============================================================ -->
+  <a-assets>
+    <img id="miloTexture" src="textures/milo.jpeg">
+    <img id="milkTexture" src="textures/milk.jpeg">
+    <img id="cup1Texture" src="textures/cup1.jpeg">
+    <img id="cup2Texture" src="textures/cup2.jpeg">
+  </a-assets>
+
+  <!-- ============================================================
+       CAMERA — player starts slightly raised, looking forward
+       ============================================================ -->
+  <a-entity position="0 2 8">
+    <a-camera wasd-controls="acceleration: 100" look-controls></a-camera>
+  </a-entity>
+
+  <!-- ============================================================
+       SKY — clear daytime blue sky
+       ============================================================ -->
+  <a-sky color="#87CEEB"></a-sky>
+
+  <!-- ============================================================
+       LIGHTING — mimics natural outdoor sunlight
+       ============================================================ -->
+
+  <!-- Soft warm ambient fill so no part is completely black -->
+  <a-light type="ambient"     color="#FFF5DC" intensity="0.65"></a-light>
+
+  <!-- Main sun — high and to the right, casts shadows -->
+  <a-light type="directional" position="5 12 5"  color="#FFF8E7" intensity="1.1"></a-light>
+
+  <!-- Cool blue sky fill from the left to soften harsh shadows -->
+  <a-light type="directional" position="-6 5 3"  color="#C8E6FA" intensity="0.3"></a-light>
+
+  <!-- Warm glow inside the pavilion (like a hanging lantern) -->
+  <a-light type="point"       position="0 3.5 0"  color="#FFE0A0" intensity="0.7" distance="11"></a-light>
+
+  <!-- ============================================================
+       GROUND — lush green grass with subtle colour variation
+       ============================================================ -->
+
+  <!-- Main grass plane (big, covers the whole scene) -->
+  <a-plane rotation="-90 0 0" width="80" height="80" color="#4A7C3F"></a-plane>
+
+  <!-- Lighter patches to break up the flat look -->
+  <a-plane rotation="-90 0 0" position=" 11 0.01 -10" width="16" height="14" color="#56913A"></a-plane>
+  <a-plane rotation="-90 0 0" position="-12 0.01   5" width="12" height="10" color="#4F8838"></a-plane>
+
+  <!-- ============================================================
+       ENTRANCE ARCH — traditional red-and-gold gate
+       ============================================================ -->
+
+  <!-- Left pillar -->
+  <a-box      position="-1.5 0.1  11" width="0.4" height="0.2"  depth="0.4"  color="#7A1A1A"></a-box>
+  <a-cylinder position="-1.5 1.5  11" radius="0.2"  height="3"              color="#9B2020"></a-cylinder>
+  <a-cylinder position="-1.5 3.2  11" radius="0.26" height="0.3"            color="#DAA520"></a-cylinder>
+  <!-- Gold trim rings on left pillar -->
+  <a-cylinder position="-1.5 0.5  11" radius="0.22" height="0.1"            color="#DAA520"></a-cylinder>
+  <a-cylinder position="-1.5 2.5  11" radius="0.22" height="0.1"            color="#DAA520"></a-cylinder>
+
+  <!-- Right pillar -->
+  <a-box      position=" 1.5 0.1  11" width="0.4" height="0.2"  depth="0.4"  color="#7A1A1A"></a-box>
+  <a-cylinder position=" 1.5 1.5  11" radius="0.2"  height="3"              color="#9B2020"></a-cylinder>
+  <a-cylinder position=" 1.5 3.2  11" radius="0.26" height="0.3"            color="#DAA520"></a-cylinder>
+  <!-- Gold trim rings on right pillar -->
+  <a-cylinder position=" 1.5 0.5  11" radius="0.22" height="0.1"            color="#DAA520"></a-cylinder>
+  <a-cylinder position=" 1.5 2.5  11" radius="0.22" height="0.1"            color="#DAA520"></a-cylinder>
+
+  <!-- Horizontal beam across the top -->
+  <a-box position="0 3.2 11" width="3.3" height="0.25" depth="0.3" color="#9B2020"></a-box>
+
+  <!-- Roof cap on gate -->
+  <a-box position="0 3.5 11" width="3.6" height="0.15" depth="0.45" color="#C8102E"></a-box>
+
+  <!-- ============================================================
+       ENTRANCE LANTERNS — hanging red lanterns on the gate
+       ============================================================ -->
+
+  <!-- Left lantern -->
+  <a-cylinder position="-1.5 3.55 11" radius="0.03" height="0.4"  color="#DAA520"></a-cylinder>
+  <a-sphere   position="-1.5 3.2  11" radius="0.22"               color="#DC143C"></a-sphere>
+  <a-cylinder position="-1.5 2.97 11" radius="0.03" height="0.15" color="#FFD700"></a-cylinder>
+
+  <!-- Right lantern -->
+  <a-cylinder position=" 1.5 3.55 11" radius="0.03" height="0.4"  color="#DAA520"></a-cylinder>
+  <a-sphere   position=" 1.5 3.2  11" radius="0.22"               color="#DC143C"></a-sphere>
+  <a-cylinder position=" 1.5 2.97 11" radius="0.03" height="0.15" color="#FFD700"></a-cylinder>
+
+  <!-- ============================================================
+       STONE PATHWAY — leads from gate to the pavilion
+       ============================================================ -->
+
+  <!-- Each row has 3 stone slabs with alternating sandy colours -->
+  <!-- z=10 row -->
+  <a-box position="-1.1 0.05 10" width="0.95" height="0.1" depth="0.95" color="#B0956E"></a-box>
+  <a-box position=" 0   0.05 10" width="0.95" height="0.1" depth="0.95" color="#C4A47A"></a-box>
+  <a-box position=" 1.1 0.05 10" width="0.95" height="0.1" depth="0.95" color="#B0956E"></a-box>
+  <!-- z=8 row -->
+  <a-box position="-1.1 0.05  8" width="0.95" height="0.1" depth="0.95" color="#C4A47A"></a-box>
+  <a-box position=" 0   0.05  8" width="0.95" height="0.1" depth="0.95" color="#B0956E"></a-box>
+  <a-box position=" 1.1 0.05  8" width="0.95" height="0.1" depth="0.95" color="#C4A47A"></a-box>
+  <!-- z=6 row -->
+  <a-box position="-1.1 0.05  6" width="0.95" height="0.1" depth="0.95" color="#B0956E"></a-box>
+  <a-box position=" 0   0.05  6" width="0.95" height="0.1" depth="0.95" color="#C4A47A"></a-box>
+  <a-box position=" 1.1 0.05  6" width="0.95" height="0.1" depth="0.95" color="#B0956E"></a-box>
+  <!-- z=4 row -->
+  <a-box position="-1.1 0.05  4" width="0.95" height="0.1" depth="0.95" color="#C4A47A"></a-box>
+  <a-box position=" 0   0.05  4" width="0.95" height="0.1" depth="0.95" color="#B0956E"></a-box>
+  <a-box position=" 1.1 0.05  4" width="0.95" height="0.1" depth="0.95" color="#C4A47A"></a-box>
+  <!-- z=2 row -->
+  <a-box position="-1.1 0.05  2" width="0.95" height="0.1" depth="0.95" color="#B0956E"></a-box>
+  <a-box position=" 0   0.05  2" width="0.95" height="0.1" depth="0.95" color="#C4A47A"></a-box>
+  <a-box position=" 1.1 0.05  2" width="0.95" height="0.1" depth="0.95" color="#B0956E"></a-box>
+
+  <!-- ============================================================
+       PAVILION BASE & PILLARS
+       ============================================================ -->
+
+  <!-- Raised octagonal stone platform -->
+  <a-cylinder position="0 0.12 0" radius="6.2" height="0.25" color="#C2A96B"></a-cylinder>
+
+  <!-- 8 red wooden pillars around the pavilion -->
+  <a-cylinder position=" 4  2  0" radius="0.22" height="4" color="#8B1A1A"></a-cylinder>
+  <a-cylinder position="-4  2  0" radius="0.22" height="4" color="#8B1A1A"></a-cylinder>
+  <a-cylinder position=" 0  2  4" radius="0.22" height="4" color="#8B1A1A"></a-cylinder>
+  <a-cylinder position=" 0  2 -4" radius="0.22" height="4" color="#8B1A1A"></a-cylinder>
+  <a-cylinder position=" 3  2  3" radius="0.22" height="4" color="#8B1A1A"></a-cylinder>
+  <a-cylinder position="-3  2  3" radius="0.22" height="4" color="#8B1A1A"></a-cylinder>
+  <a-cylinder position=" 3  2 -3" radius="0.22" height="4" color="#8B1A1A"></a-cylinder>
+  <a-cylinder position="-3  2 -3" radius="0.22" height="4" color="#8B1A1A"></a-cylinder>
+
+  <!-- Gold collar ring at top of each pillar -->
+  <a-cylinder position=" 4  3.8  0" radius="0.25" height="0.1" color="#DAA520"></a-cylinder>
+  <a-cylinder position="-4  3.8  0" radius="0.25" height="0.1" color="#DAA520"></a-cylinder>
+  <a-cylinder position=" 0  3.8  4" radius="0.25" height="0.1" color="#DAA520"></a-cylinder>
+  <a-cylinder position=" 0  3.8 -4" radius="0.25" height="0.1" color="#DAA520"></a-cylinder>
+  <a-cylinder position=" 3  3.8  3" radius="0.25" height="0.1" color="#DAA520"></a-cylinder>
+  <a-cylinder position="-3  3.8  3" radius="0.25" height="0.1" color="#DAA520"></a-cylinder>
+  <a-cylinder position=" 3  3.8 -3" radius="0.25" height="0.1" color="#DAA520"></a-cylinder>
+  <a-cylinder position="-3  3.8 -3" radius="0.25" height="0.1" color="#DAA520"></a-cylinder>
+
+  <!-- ============================================================
+       PAVILION ROOF — layered cones for a traditional look
+       ============================================================ -->
+
+  <!-- Lower roof brim ring -->
+  <a-cylinder position="0 4.2 0" radius="6.3" height="0.25" color="#9B2020"></a-cylinder>
+  <!-- Wide lower cone -->
+  <a-cone position="0 5.6 0" radius-bottom="6.5" radius-top="3.2" height="2.2" color="#B52020"></a-cone>
+  <!-- Narrowing upper cone -->
+  <a-cone position="0 6.9 0" radius-bottom="3.3" radius-top="0.3"  height="2.2" color="#9B2020"></a-cone>
+  <!-- Gold finial at the very tip -->
+  <a-sphere   position="0 8.05 0" radius="0.22" color="#DAA520"></a-sphere>
+  <a-cylinder position="0 8.4  0" radius="0.06" height="0.5"  color="#DAA520"></a-cylinder>
+
+  <!-- ============================================================
+       PAVILION LANTERNS — warm glow inside the pavilion
+       ============================================================ -->
+
+  <!-- East lantern -->
+  <a-cylinder position=" 2 4.05 0" radius="0.03" height="0.4"  color="#DAA520"></a-cylinder>
+  <a-sphere   position=" 2 3.7  0" radius="0.26"               color="#DC143C"></a-sphere>
+  <a-light type="point" position=" 2 3.7 0" color="#FFB347" intensity="1.0" distance="7"></a-light>
+  <a-cylinder position=" 2 3.45 0" radius="0.025" height="0.2" color="#FFD700"></a-cylinder>
+
+  <!-- West lantern -->
+  <a-cylinder position="-2 4.05 0" radius="0.03" height="0.4"  color="#DAA520"></a-cylinder>
+  <a-sphere   position="-2 3.7  0" radius="0.26"               color="#DC143C"></a-sphere>
+  <a-light type="point" position="-2 3.7 0" color="#FFB347" intensity="1.0" distance="7"></a-light>
+  <a-cylinder position="-2 3.45 0" radius="0.025" height="0.2" color="#FFD700"></a-cylinder>
+
+  <!-- ============================================================
+       TABLE — round wooden table with dark legs
+       The wood brown colour gives it a realistic timber look.
+       ============================================================ -->
+
+  <!-- Table top surface (warm oak brown) -->
+  <a-cylinder position="0 1.42 0" radius="1.5"  height="0.12" color="#A0522D"></a-cylinder>
+  <!-- Subtle edge lip to add depth -->
+  <a-cylinder position="0 1.46 0" radius="1.52" height="0.04" color="#7B3F1A"></a-cylinder>
+
+  <!-- Four sturdy dark brown wooden legs -->
+  <a-cylinder position="-1.0 0.71 -1.0" radius="0.09" height="1.42" color="#5C2E00"></a-cylinder>
+  <a-cylinder position=" 1.0 0.71 -1.0" radius="0.09" height="1.42" color="#5C2E00"></a-cylinder>
+  <a-cylinder position="-1.0 0.71  1.0" radius="0.09" height="1.42" color="#5C2E00"></a-cylinder>
+  <a-cylinder position=" 1.0 0.71  1.0" radius="0.09" height="1.42" color="#5C2E00"></a-cylinder>
+
+  <!-- ============================================================
+       CHAIR 1 — South side, seat faces north toward the table
+       Wood colours: medium oak seat, dark legs
+       ============================================================ -->
+
+  <!-- Seat -->
+  <a-box position="0 0.93 -2.2" width="0.68" height="0.1" depth="0.68" color="#A0522D"></a-box>
+  <!-- Back rest -->
+  <a-box position="0 1.48 -2.58" width="0.68" height="1.0" depth="0.12"  color="#7B3F1A"></a-box>
+  <!-- Back legs -->
+  <a-cylinder position="-0.3 0.46 -2.55" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <a-cylinder position=" 0.3 0.46 -2.55" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <!-- Front legs -->
+  <a-cylinder position="-0.3 0.46 -1.93" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <a-cylinder position=" 0.3 0.46 -1.93" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+
+  <!-- ============================================================
+       CHAIR 2 — North side, seat faces south toward the table
+       ============================================================ -->
+
+  <!-- Seat -->
+  <a-box position="0 0.93 2.2" width="0.68" height="0.1" depth="0.68" color="#A0522D"></a-box>
+  <!-- Back rest -->
+  <a-box position="0 1.48 2.58" width="0.68" height="1.0" depth="0.12" color="#7B3F1A"></a-box>
+  <!-- Back legs -->
+  <a-cylinder position="-0.3 0.46 2.55" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <a-cylinder position=" 0.3 0.46 2.55" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <!-- Front legs -->
+  <a-cylinder position="-0.3 0.46 1.93" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <a-cylinder position=" 0.3 0.46 1.93" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+
+  <!-- ============================================================
+       CHAIR 3 — East side
+       ============================================================ -->
+
+  <!-- Seat -->
+  <a-box position="2.2 0.93 0" width="0.68" height="0.1" depth="0.68" color="#A0522D"></a-box>
+  <!-- Back rest -->
+  <a-box position="2.58 1.48 0" width="0.12" height="1.0" depth="0.68" color="#7B3F1A"></a-box>
+  <!-- Back legs -->
+  <a-cylinder position="2.55 0.46 -0.3" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <a-cylinder position="2.55 0.46  0.3" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <!-- Front legs -->
+  <a-cylinder position="1.93 0.46 -0.3" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <a-cylinder position="1.93 0.46  0.3" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+
+  <!-- ============================================================
+       CHAIR 4 — West side
+       ============================================================ -->
+
+  <!-- Seat -->
+  <a-box position="-2.2 0.93 0" width="0.68" height="0.1" depth="0.68" color="#A0522D"></a-box>
+  <!-- Back rest -->
+  <a-box position="-2.58 1.48 0" width="0.12" height="1.0" depth="0.68" color="#7B3F1A"></a-box>
+  <!-- Back legs -->
+  <a-cylinder position="-2.55 0.46 -0.3" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <a-cylinder position="-2.55 0.46  0.3" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <!-- Front legs -->
+  <a-cylinder position="-1.93 0.46 -0.3" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+  <a-cylinder position="-1.93 0.46  0.3" radius="0.045" height="0.92" color="#5C2E00"></a-cylinder>
+
+  <!-- ============================================================
+       MILO TIN — textured with milo.jpg from textures folder
+       The src="#miloTexture" links to the <img> in <a-assets>.
+       ============================================================ -->
+
+  <!-- Main Milo tin body — texture wraps around the cylinder -->
+  <a-cylinder position="-0.75 1.65 0.1"
+              radius="0.145" height="0.46"
+              src="#miloTexture"
+              color="#ffffff">
+  </a-cylinder>
+  <!-- Gold top lid -->
+  <a-cylinder position="-0.75 1.9 0.1" radius="0.155" height="0.07" color="#DAA520"></a-cylinder>
+  <!-- Gold bottom rim -->
+  <a-cylinder position="-0.75 1.42 0.1" radius="0.155" height="0.05" color="#DAA520"></a-cylinder>
+
+  <!-- ============================================================
+       MILK TIN — textured with milk.jpg from textures folder
+       ============================================================ -->
+
+  <!-- Main milk tin body -->
+  <a-cylinder position="0.75 1.65 0.1"
+              radius="0.145" height="0.46"
+              src="#milkTexture"
+              color="#ffffff">
+  </a-cylinder>
+  <!-- Silver top lid -->
+  <a-cylinder position="0.75 1.9 0.1" radius="0.155" height="0.07" color="#BDC3C7"></a-cylinder>
+  <!-- Silver bottom rim -->
+  <a-cylinder position="0.75 1.42 0.1" radius="0.155" height="0.05" color="#BDC3C7"></a-cylinder>
+
+  <!-- ============================================================
+       CUP 1 — Left cup, textured with cup1.jpg
+       open-ended="true" makes the cylinder hollow (open at top)
+       A torus ring is added at the rim to show the open edge.
+       ============================================================ -->
+
+  <!-- Cup body: open cylinder (no top face, like a real cup) -->
+  <a-cylinder position="-0.25 1.61 -0.65"
+              radius="0.115" height="0.22"
+              src="#cup1Texture"
+              color="#ffffff"
+              open-ended="true">
+  </a-cylinder>
+  <!-- Solid base disc (closed bottom) -->
+  <a-cylinder position="-0.25 1.5 -0.65" radius="0.115" height="0.01" color="#E8D5C0"></a-cylinder>
+  <!-- Rim ring — sits on the open top edge to frame the opening -->
+  <a-torus position="-0.25 1.72 -0.65"
+           radius="0.115" radius-tubular="0.012"
+           rotation="90 0 0" color="#D4A96A">
+  </a-torus>
+  <!-- Cup handle -->
+  <a-torus position="-0.02 1.61 -0.65"
+           radius="0.07" radius-tubular="0.014"
+           rotation="0 90 0" color="#FAF0E6">
+  </a-torus>
+  <!-- Dark tea liquid visible from above -->
+  <a-cylinder position="-0.25 1.71 -0.65" radius="0.1" height="0.01" color="#6F3B1A"></a-cylinder>
+
+  <!-- ============================================================
+       CUP 2 — Right cup, textured with cup2.jpg
+       Same open-cup construction as Cup 1.
+       ============================================================ -->
+
+  <!-- Cup body: open cylinder -->
+  <a-cylinder position="0.25 1.61 -0.65"
+              radius="0.115" height="0.22"
+              src="#cup2Texture"
+              color="#ffffff"
+              open-ended="true">
+  </a-cylinder>
+  <!-- Solid base disc -->
+  <a-cylinder position="0.25 1.5 -0.65" radius="0.115" height="0.01" color="#E8D5C0"></a-cylinder>
+  <!-- Rim ring -->
+  <a-torus position="0.25 1.72 -0.65"
+           radius="0.115" radius-tubular="0.012"
+           rotation="90 0 0" color="#D4A96A">
+  </a-torus>
+  <!-- Cup handle -->
+  <a-torus position="0.48 1.61 -0.65"
+           radius="0.07" radius-tubular="0.014"
+           rotation="0 90 0" color="#FAF0E6">
+  </a-torus>
+  <!-- Dark tea liquid visible from above -->
+  <a-cylinder position="0.25 1.71 -0.65" radius="0.1" height="0.01" color="#6F3B1A"></a-cylinder>
+
+  <!-- ============================================================
+       BACKGROUND HUT — small wooden shelter in the back-left
+       ============================================================ -->
+
+  <!-- Raised wooden platform / floor -->
+  <a-box position="-9 0.15 -6" width="3.5" height="0.3" depth="3.0" color="#8D6E3F"></a-box>
+
+  <!-- Back wall -->
+  <a-box position="-9   1.0 -7.4" width="3.5" height="2.0" depth="0.15" color="#A0784A"></a-box>
+  <!-- Left wall -->
+  <a-box position="-10.7 1.0 -6"  width="0.15" height="2.0" depth="3.0"  color="#A0784A"></a-box>
+  <!-- Right wall -->
+  <a-box position="-7.3  1.0 -6"  width="0.15" height="2.0" depth="3.0"  color="#A0784A"></a-box>
+
+  <!-- Cone roof — dark brown thatched look -->
+  <a-cone position="-9 2.6 -6" radius-bottom="2.4" radius-top="0.1" height="1.3" color="#7B3F10"></a-cone>
+
+  <!-- Doorway header beam -->
+  <a-box position="-9 2.05 -4.65" width="1.1" height="0.12" depth="0.15" color="#5C3A1E"></a-box>
+
+  <!-- ============================================================
+       TREES — simple stylised trees using cylinder trunk + spheres
+       ============================================================ -->
+
+  <!-- Tree 1 — far left -->
+  <a-cylinder position="-11 1.3  4" radius="0.32" height="2.6" color="#6B4226"></a-cylinder>
+  <a-sphere   position="-11 4.0  4" radius="2.0"  color="#2E6B1A"></a-sphere>
+  <a-sphere   position="-12.4 3.7 4.2" radius="1.6" color="#3A7D22"></a-sphere>
+  <a-sphere   position="-9.6  3.7 3.8" radius="1.6" color="#3A7D22"></a-sphere>
+  <a-sphere   position="-11 4.6  4" radius="1.5"  color="#256015"></a-sphere>
+
+  <!-- Tree 2 — far right (with a few red apples) -->
+  <a-cylinder position="11 1.3  4"  radius="0.32" height="2.6" color="#7A4A2A"></a-cylinder>
+  <a-sphere   position="11 4.0  4"  radius="2.0"  color="#2E6B1A"></a-sphere>
+  <a-sphere   position="12.4 3.7 4.2" radius="1.6" color="#3A7D22"></a-sphere>
+  <a-sphere   position="9.6  3.7 3.8" radius="1.6" color="#3A7D22"></a-sphere>
+  <a-sphere   position="11  4.6 4"   radius="1.5"  color="#256015"></a-sphere>
+  <!-- Apples -->
+  <a-sphere position="12.7 3.5 4.4" radius="0.14" color="#E53935"></a-sphere>
+  <a-sphere position="9.5  3.5 3.6" radius="0.13" color="#E53935"></a-sphere>
+  <a-sphere position="11.1 4.4 5.3" radius="0.13" color="#E53935"></a-sphere>
+
+  <!-- Tree 3 — behind hut, back left -->
+  <a-cylinder position="-13 1.3 -5" radius="0.28" height="2.4" color="#6B4226"></a-cylinder>
+  <a-sphere   position="-13 3.8 -5" radius="1.8"  color="#2E5E15"></a-sphere>
+  <a-sphere   position="-14.2 3.5 -5.2" radius="1.4" color="#3A7020"></a-sphere>
+  <a-sphere   position="-11.8 3.5 -4.8" radius="1.4" color="#3A7020"></a-sphere>
+
+  <!-- Tree 4 — back right corner -->
+  <a-cylinder position="12 1.3 -7"  radius="0.28" height="2.4" color="#7A4A2A"></a-cylinder>
+  <a-sphere   position="12 3.8 -7"  radius="1.8"  color="#2E5E15"></a-sphere>
+  <a-sphere   position="13.2 3.5 -7.2" radius="1.4" color="#3A7020"></a-sphere>
+  <a-sphere   position="10.8 3.5 -6.8" radius="1.4" color="#3A7020"></a-sphere>
+
+  <!-- ============================================================
+       POND — decorative water feature to the right
+       ============================================================ -->
+
+  <!-- Water surface (semi-transparent blue) -->
+  <a-cylinder position="7 0.08 -7" radius="2.4" height="0.14" color="#3A85C0" opacity="0.75"></a-cylinder>
+  <!-- Stone border ring around the pond -->
+  <a-torus position="7 0.15 -7" radius="2.5" radius-tubular="0.16" rotation="90 0 0" color="#9E8866"></a-torus>
+  <!-- Lily pads on the water -->
+  <a-cylinder position="6.0 0.12 -6.3" radius="0.38" height="0.05" color="#2A5E12"></a-cylinder>
+  <a-cylinder position="7.8 0.12 -7.8" radius="0.33" height="0.05" color="#376A1A"></a-cylinder>
+  <a-cylinder position="6.5 0.12 -8.0" radius="0.35" height="0.05" color="#2A5E12"></a-cylinder>
+  <!-- Rocks at pond edge -->
+  <a-sphere position="5.0 0.15 -5.8" radius="0.23" color="#A08C70"></a-sphere>
+  <a-sphere position="8.5 0.15 -8.5" radius="0.20" color="#A08C70"></a-sphere>
+
+  <!-- ============================================================
+       FLOWERS & SHRUBS — scattered around for a lush garden feel
+       ============================================================ -->
+
+  <!-- Pink flowers — left of path entrance -->
+  <a-cylinder position="-4.0 0.48 8.0" radius="0.04" height="0.96" color="#228B22"></a-cylinder>
+  <a-cylinder position="-3.5 0.48 8.5" radius="0.04" height="0.96" color="#228B22"></a-cylinder>
+  <a-cylinder position="-4.5 0.48 8.2" radius="0.04" height="0.96" color="#228B22"></a-cylinder>
+  <a-sphere position="-4.0 1.46 8.0" radius="0.18" color="#FF69B4"></a-sphere>
+  <a-sphere position="-3.5 1.46 8.5" radius="0.17" color="#FF1493"></a-sphere>
+  <a-sphere position="-4.5 1.46 8.2" radius="0.19" color="#FF69B4"></a-sphere>
+
+  <!-- Yellow flowers — right of path entrance -->
+  <a-cylinder position="4.0 0.48 8.0" radius="0.04" height="0.96" color="#228B22"></a-cylinder>
+  <a-cylinder position="4.5 0.48 8.5" radius="0.04" height="0.96" color="#228B22"></a-cylinder>
+  <a-cylinder position="3.5 0.48 8.2" radius="0.04" height="0.96" color="#228B22"></a-cylinder>
+  <a-sphere position="4.0 1.46 8.0" radius="0.17" color="#FFD700"></a-sphere>
+  <a-sphere position="4.5 1.46 8.5" radius="0.18" color="#FFA500"></a-sphere>
+  <a-sphere position="3.5 1.46 8.2" radius="0.19" color="#FFD700"></a-sphere>
+
+  <!-- Purple flowers near the pond -->
+  <a-cylinder position="4.2 0.48 -7.0" radius="0.04" height="0.96" color="#228B22"></a-cylinder>
+  <a-cylinder position="4.7 0.48 -7.4" radius="0.04" height="0.96" color="#228B22"></a-cylinder>
+  <a-sphere position="4.2 1.46 -7.0" radius="0.18" color="#9B59B6"></a-sphere>
+  <a-sphere position="4.7 1.46 -7.4" radius="0.17" color="#7D3C98"></a-sphere>
+
+  <!-- Round shrubs beside the pathway -->
+  <a-sphere position=" 4.0 0.5  7"  radius="0.5"  color="#27782A"></a-sphere>
+  <a-sphere position="-4.0 0.5  7"  radius="0.5"  color="#27782A"></a-sphere>
+  <a-sphere position=" 5.0 0.48 3"  radius="0.45" color="#2E8B57"></a-sphere>
+  <a-sphere position="-5.0 0.48 3"  radius="0.45" color="#2E8B57"></a-sphere>
+  <!-- Corner accent bushes at entrance -->
+  <a-sphere position=" 3.0 0.35 9"  radius="0.35" color="#33A833"></a-sphere>
+  <a-sphere position="-3.0 0.35 9"  radius="0.35" color="#33A833"></a-sphere>
+
+  <!-- Bamboo stalks in back corners -->
+  <a-cylinder position=" 8.0 1.0 -5"  radius="0.07" height="2.2" color="#4CAF50"></a-cylinder>
+  <a-cylinder position=" 8.2 1.1 -5"  radius="0.05" height="2.0" color="#66BB6A"></a-cylinder>
+  <a-cylinder position="-8.0 1.0 -5"  radius="0.07" height="2.2" color="#4CAF50"></a-cylinder>
+  <a-cylinder position="-8.2 1.1 -5"  radius="0.05" height="2.0" color="#66BB6A"></a-cylinder>
+
+</a-scene>
+</body>
+</html>
